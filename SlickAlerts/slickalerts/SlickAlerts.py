@@ -15,7 +15,7 @@ from playsound import playsound
 def main():
     pageNumber = 0
     inStock = False
-    start = True
+    start = True 
     
     programTitle()
     
