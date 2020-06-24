@@ -3,9 +3,7 @@
     Will add an data structure so that an unlimited amount of keywords can be used
 '''
 
-
-''' convert the text as it is scanned into all cap '''
-''' this way you dont have to make it case sensitive '''
+''' exit program when 15 second alert ends '''
 
 import datetime
 import requests
