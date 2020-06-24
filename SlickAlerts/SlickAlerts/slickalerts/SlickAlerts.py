@@ -63,7 +63,7 @@ def readPage(keyword1, keyword2, pagesToCheck, start):
             pageNumber += 1
             inStock = False
         
-    return inStock, pageNumber, start
+    return inStock, pageNumber, start, "null"
 
 # checkPage: Checks to see if past page -- reset back to page one and waits 15 minutes
 def checkPage(pageNumber, pagesToCheck, sleepDuration):    
