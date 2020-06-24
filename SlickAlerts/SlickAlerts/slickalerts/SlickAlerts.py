@@ -42,7 +42,7 @@ def newLine():
     print()
             
 # readPage: Reads and scans HTML page for keywords
-def readPage(keyword1, keyword2, pagesToCheck, start):
+def readPage(keyword1, keyword2, pagesToCheck, start): 
     # if keyword is blank dont check it
     
     pageNumber = 1
