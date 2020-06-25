@@ -1,16 +1,10 @@
-''' SlickAlerts 
-    For now, only checks four keywords, case sensitive
-    Will add an data structure so that an unlimited amount of keywords can be used
-'''
-from asyncio.tasks import sleep
-
-''' exit program when 15 second alert ends '''
+''' SlickAlerts  '''
 
 import datetime
 import requests
 import time
-import math
 from playsound import playsound
+from os.path import sys
 
 def main():
     programTitle()
@@ -87,7 +81,7 @@ def readPage(keywordList, pagesToCheck, start):
             else:
                 pageNumber += 1
                 inStock = False
-        # check concatenated keywords 
+        # Check concatenated keywords 
         if(keywordsConcat.upper() in request.text.upper()):
                 inStock = True
                 start = False
@@ -118,7 +112,9 @@ def checkStock(inStock, pageNumber, item):
         print(currentTime)
         print(item.capitalize() + " found")
         print("Slickdeals page:",pageNumber)
-        playsound("/Users/jasonmoreau/Desktop/alert.mp3")
+        playsound("alert.mp3")
+        sys.exit(-1)
+        
        
 if __name__ == '__main__':
     main()
