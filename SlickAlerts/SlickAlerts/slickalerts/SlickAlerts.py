@@ -11,17 +11,27 @@ import time
 from playsound import playsound
 
 def main():
+    programTitle()
     pageNumber = 0
     inStock = False
     start = True 
-    
-    programTitle()
-    
-    sleepDuration = eval(input("Enter time interval (in minutes): "))
-    keywords = input("Enter keywords (separated by a space): ")
+    restart = True
+
+    while(restart):
+        try:
+            sleepDuration = eval(input("Enter time interval (in minutes): "))   # time between each scan
+            restart = False
+        except NameError:
+            print("Enter a number")
+            restart = True
+        except SyntaxError:
+            print("Enter a number")
+            restart = True
+        
+    keywords = input("Enter keywords (separated by a space): ")     # add keywords to list data structure
     words = keywords.split()
     keywordList = [str(x) for x in words]   # list that contains all keywords
-    pagesToCheck = eval(input("Enter the total number of pages to check: "))
+    pagesToCheck = eval(input("Enter the total number of pages to check: "))    # total pages to check for keywords
     newLine()
     
     # if keywordsList is empty exit program
@@ -50,29 +60,23 @@ def newLine():
             
 # readPage: Reads and scans HTML page for keywords
 def readPage(keywordList, pagesToCheck, start):
-    pageNumber = 1
-     
-    # if keywordsList is empty return and exit program
-    if(len(keywordList) == 0):
-        start = False
-        print("You have not entered any keywords")
+    pageNumber = 1     
     
     while(pageNumber <= pagesToCheck):
         request = requests.get("https://slickdeals.net/forums/forumdisplay.php?f=9&page=" + str(pageNumber))
         print("SCANNING PAGE...DONE")
-        # Separate if statements to return which one was found
-        if(keyword1.upper() in request.text.upper()):
-            inStock = True
-            start = False
-            return inStock, pageNumber, start, keyword1
-        elif(keyword2.upper() in request.text.upper()):
-            inStock = True
-            start = False
-            return inStock, pageNumber, start, keyword2
-        else:
-            pageNumber += 1
-            inStock = False
-        
+        # iterate through list
+        for i in keywordList:
+            # Separate if statements to return which one was found
+            if(i.upper() in request.text.upper()):
+                inStock = True
+                start = False
+                request.close()
+                return inStock, pageNumber, start, i
+            else:
+                pageNumber += 1
+                inStock = False
+        request.close()        
     return inStock, pageNumber, start, "null"
 
 # checkPage: Checks to see if past page -- reset back to page one and waits 15 minutes
@@ -81,7 +85,7 @@ def checkPage(pageNumber, pagesToCheck, sleepDuration):
         pageNumber = 1
         currentTime = datetime.datetime.now();
         print(currentTime)
-        print("Not in stock")
+        print("Not found")
         if(sleepDuration == 1):
             print("Waiting " + str(sleepDuration) + " minute\n")
         else:
