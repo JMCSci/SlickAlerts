@@ -8,42 +8,23 @@ from os.path import sys
 import webbrowser as wb
 
 def main():
+    start = True
+    inStock = False
     programTitle()
     instructions()
     pageNumber = 0
-    inStock = False
-    start = True 
-    restart = True
-
-    while(restart):
-        try:
-            sleepDuration = (eval(input("Enter time interval (in minutes): ")))   # time between each scan
-            if(sleepDuration < 0):
-                sleepDuration = sleepDuration * -1
-            keywords = input("Enter keywords (separated by a space): ")     # add keywords to list data structure
-            words = keywords.split()
-            keywordList = [str(x) for x in words]   # list that contains all keywords
-            pagesToCheck = eval(input("Enter the total number of pages to check: "))       # total pages to check for keywords 
-            if(pagesToCheck < 0):
-                pagesToCheck = pagesToCheck * -1
-            newLine()
-            restart = False
-        except NameError:
-            print("Please enter a valid number.\n")
-            restart = True
-        except SyntaxError:
-            print("Please enter a valid number.\n")
-            restart = True
-        
-    # if keywordsList is empty exit program
+    sleepDuration, keywordList, pagesToCheck, openBrowser = settings()
+    
+    # If keywordsList is empty exit program
     if(len(keywordList) == 0):
         start = False
         print("You have not entered any keywords. The program will exit.")
     
+    # Start scanning webpage after getting user settings
     while(start):
         inStock, pageNumber, start, item = readPage(keywordList, pagesToCheck, start)
         if(inStock == True):
-            checkStock(inStock, pageNumber, item)
+            checkStock(inStock, pageNumber, item, openBrowser)
         else:
             checkPage(pageNumber, pagesToCheck, sleepDuration)
             
@@ -55,16 +36,48 @@ def programTitle():
     print("|                                        |")
     print("*----------------------------------------*\n")
     
-
+    
 def instructions():
     print("Instructions")
     print("------------")
-    print("Use hyphens to separate products that are phrases (ex: The-Last-Of-Us)")
-    print("Use spaces to separate products (ex: The-Last-Of-Us Honeywell Seagate)\n")
+    print("* Use hyphens to separate products that are phrases (ex: The-Last-Of-Us)")
+    print("* Use spaces to separate products (ex: The-Last-Of-Us Honeywell Seagate)\n")
+    
+
+def settings():
+    restart = True  # Initial settings for program
+    while(restart):
+        try:
+            sleepDuration = (eval(input("Enter time interval (in minutes): ")))   # time between each scan
+            if(sleepDuration < 0):
+                sleepDuration = sleepDuration * -1
+            keywords = input("Enter keywords (separated by a space): ")     # add keywords to list data structure
+            words = keywords.split()
+            keywordList = [str(x) for x in words]   # list that contains all keywords
+            pagesToCheck = eval(input("Enter the total number of pages to check: "))   # total pages to check for keywords 
+            if(pagesToCheck < 0):
+                pagesToCheck = pagesToCheck * -1
+            browserOption = input("Do you want to open a link to the webpage when found? Yes or No? ")
+            browserOption = browserOption.upper()
+            newLine()
+            if(browserOption == "YES" or browserOption == "Y"):
+                openBrowser = True
+            else:
+                openBrowser = False
+            restart = False
+        except NameError:
+            print("Please enter a valid number.\n")
+            restart = True
+        except SyntaxError:
+            print("Please enter a valid number.\n")
+            restart = True
+    return sleepDuration, keywordList, pagesToCheck, openBrowser
+    
 
 # newLine: Prints a new line
 def newLine():
     print()
+       
             
 # readPage: Reads and scans HTML page for keywords
 def readPage(keywordList, pagesToCheck, start):
@@ -91,6 +104,7 @@ def checkPage(pageNumber, pagesToCheck, sleepDuration):
     if(pageNumber > pagesToCheck):
         pageNumber = 1
         currentTime = datetime.datetime.now();
+        newLine()
         print(currentTime)
         print("Not found")
         if(sleepDuration == 1):
@@ -101,15 +115,19 @@ def checkPage(pageNumber, pagesToCheck, sleepDuration):
         time.sleep(sleepDuration)
         
 # checkStock: Prints message and plays alert if found
-def checkStock(inStock, pageNumber, item):
+def checkStock(inStock, pageNumber, item, openBrowser):
     if(inStock == True):
         # Play audio alert
         currentTime = datetime.datetime.now();
+        newLine()
         print(currentTime)
-        print(item.capitalize() + " found")
+        print("*** " + item.capitalize() + " found ***\n")
         print("Slickdeals page:",pageNumber)
-        wb.open("https://slickdeals.net/forums/forumdisplay.php?f=9&page=" + str(pageNumber))
+        print("Your default web browser will now open.")
         playsound("alert.mp3")
+        time.sleep(2)   # pause so user can read message
+        if(openBrowser == True):
+            wb.open("https://slickdeals.net/forums/forumdisplay.php?f=9&page=" + str(pageNumber)) # opens web browser when found
         sys.exit(-1)
         
        
