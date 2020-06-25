@@ -33,7 +33,6 @@ def main():
             print("Please enter a valid number.\n")
             restart = True
         
-    
     # if keywordsList is empty exit program
     if(len(keywordList) == 0):
         start = False
