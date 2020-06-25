@@ -5,6 +5,7 @@ import requests
 import time
 from playsound import playsound
 from os.path import sys
+import webbrowser as wb
 
 def main():
     programTitle()
@@ -107,6 +108,7 @@ def checkStock(inStock, pageNumber, item):
         print(currentTime)
         print(item.capitalize() + " found")
         print("Slickdeals page:",pageNumber)
+        wb.open("https://slickdeals.net/forums/forumdisplay.php?f=9&page=" + str(pageNumber))
         playsound("alert.mp3")
         sys.exit(-1)
         
