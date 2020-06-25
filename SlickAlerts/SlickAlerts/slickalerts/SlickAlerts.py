@@ -18,12 +18,19 @@ def main():
     programTitle()
     
     sleepDuration = eval(input("Enter time interval (in minutes): "))
-    keyword1, keyword2 = input("Enter 2 keywords (separated by comma then space): ").split(', ')
+    keywords = input("Enter keywords (separated by a space): ")
+    words = keywords.split()
+    keywordList = [str(x) for x in words]   # list that contains all keywords
     pagesToCheck = eval(input("Enter the total number of pages to check: "))
     newLine()
     
+    # if keywordsList is empty exit program
+    if(len(keywordList) == 0):
+        start = False
+        print("You have not entered any keywords. The program will exit.")
+    
     while(start):
-        inStock, pageNumber, start, item = readPage(keyword1, keyword2, pagesToCheck, start)
+        inStock, pageNumber, start, item = readPage(keywordList, pagesToCheck, start)
         if(inStock == True):
             checkStock(inStock, pageNumber, item)
         else:
@@ -42,10 +49,13 @@ def newLine():
     print()
             
 # readPage: Reads and scans HTML page for keywords
-def readPage(keyword1, keyword2, pagesToCheck, start): 
-    # if keyword is blank dont check it
-    
+def readPage(keywordList, pagesToCheck, start):
     pageNumber = 1
+     
+    # if keywordsList is empty return and exit program
+    if(len(keywordList) == 0):
+        start = False
+        print("You have not entered any keywords")
     
     while(pageNumber <= pagesToCheck):
         request = requests.get("https://slickdeals.net/forums/forumdisplay.php?f=9&page=" + str(pageNumber))
