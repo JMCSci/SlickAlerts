@@ -8,6 +8,7 @@ from os.path import sys
 
 def main():
     programTitle()
+    instructions()
     pageNumber = 0
     inStock = False
     start = True 
@@ -52,6 +53,13 @@ def programTitle():
     print("|              SLICKALERTS               |")
     print("|                                        |")
     print("*----------------------------------------*\n")
+    
+
+def instructions():
+    print("Instructions")
+    print("------------")
+    print("Use hyphens to separate products that are phrases (ex: The-Last-Of-Us)")
+    print("Use spaces to separate products (ex: The-Last-Of-Us Honeywell Seagate)\n")
 
 # newLine: Prints a new line
 def newLine():
@@ -60,11 +68,6 @@ def newLine():
 # readPage: Reads and scans HTML page for keywords
 def readPage(keywordList, pagesToCheck, start):
     pageNumber = 1     
-    keywordsConcat = ""
-    
-    # Concatenate keywords
-    for i in keywordList:
-            keywordsConcat += i + " "
 
     while(pageNumber <= pagesToCheck):
         request = requests.get("https://slickdeals.net/forums/forumdisplay.php?f=9&page=" + str(pageNumber))
@@ -77,15 +80,8 @@ def readPage(keywordList, pagesToCheck, start):
                 start = False
                 request.close()
                 return inStock, pageNumber, start, i
-            else:
-                pageNumber += 1
-                inStock = False
-        # Check concatenated keywords 
-        if(keywordsConcat.upper() in request.text.upper()):
-                inStock = True
-                start = False
-                request.close()
-                return inStock, pageNumber, start, keywordsConcat
+        pageNumber += 1
+        inStock = False
         request.close()        
     return inStock, pageNumber, start, None
 
