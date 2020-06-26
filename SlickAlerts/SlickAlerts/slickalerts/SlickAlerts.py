@@ -36,14 +36,14 @@ def programTitle():
     print("|                                        |")
     print("*----------------------------------------*\n")
     
-    
+# instructions: Displays user instructions
 def instructions():
     print("Instructions")
     print("------------")
     print("* Use hyphens to separate products that are phrases (ex: The-Last-Of-Us)")
     print("* Use spaces to separate products (ex: The-Last-Of-Us Honeywell Seagate)\n")
     
-
+# settings: Program settings (time interval, number of pages to check, open browser)
 def settings():
     restart = True  # Initial settings for program
     while(restart):
@@ -73,12 +73,6 @@ def settings():
             restart = True
     return sleepDuration, keywordList, pagesToCheck, openBrowser
     
-
-# newLine: Prints a new line
-def newLine():
-    print()
-       
-            
 # readPage: Reads and scans HTML page for keywords
 def readPage(keywordList, pagesToCheck, start):
     pageNumber = 1     
@@ -130,6 +124,9 @@ def checkStock(inStock, pageNumber, item, openBrowser):
             wb.open("https://slickdeals.net/forums/forumdisplay.php?f=9&page=" + str(pageNumber)) # opens web browser when found
         sys.exit(-1)
         
-       
+# newLine: Prints a new line
+def newLine():
+    print()
+                 
 if __name__ == '__main__':
     main()
