@@ -8,11 +8,10 @@ Created with Python 3.8.3
 - Runs from the command line
 
 
-Program execution instructions (make sure you're running the latest version of Python):
-- Copy SlickAlerts.py and alert.mp3 to a folder
-- Run the following from the command line in the directory where you saved the program: <code>python3 SlickAlerts.py</code>
-
-That's it!!!
+#### Program Execution Instructions
+1. Copy SlickAlerts.py and alert.mp3 to a folder.
+2. Open your command line shell and go to the directory where you saved the program.
+3. Enter the following and hit Enter: <code>python3 SlickAlerts.py</code>
 
 
 <p align="center"><img src=https://user-images.githubusercontent.com/40440123/85812491-c897ed80-b72e-11ea-8a85-1ebf17e88ad2.gif></p>
