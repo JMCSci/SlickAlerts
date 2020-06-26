@@ -123,10 +123,10 @@ def checkStock(inStock, pageNumber, item, openBrowser):
         print(currentTime)
         print("*** " + item.capitalize() + " found ***\n")
         print("Slickdeals page:",pageNumber)
-        print("Your default web browser will now open.")
         playsound("alert.mp3")
-        time.sleep(2)   # pause so user can read message
         if(openBrowser == True):
+            print("Your default web browser will now open.")
+            time.sleep(1)   # pause thread so user can read message
             wb.open("https://slickdeals.net/forums/forumdisplay.php?f=9&page=" + str(pageNumber)) # opens web browser when found
         sys.exit(-1)
         
