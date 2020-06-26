@@ -5,4 +5,4 @@
 - Includes ability to have program open default browser to the webpage of the located product
 - Runs from the command line
 
-<p align="center"><img src=https://user-images.githubusercontent.com/40440123/85812491-c897ed80-b72e-11ea-8a85-1ebf17e88ad2.gif)></p>
+<p align="center"><img src=https://user-images.githubusercontent.com/40440123/85812491-c897ed80-b72e-11ea-8a85-1ebf17e88ad2.gif></p>
