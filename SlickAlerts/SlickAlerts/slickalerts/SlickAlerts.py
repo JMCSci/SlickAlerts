@@ -6,15 +6,17 @@ import time
 from playsound import playsound
 from os.path import sys
 import webbrowser as wb
+from plyer import notification
 
 def main():
+    
     start = True
     inStock = False
     programTitle()
     instructions()
     pageNumber = 0
     sleepDuration, keywordList, pagesToCheck, openBrowser = settings()
-    
+
     # If keywordsList is empty exit program
     if(len(keywordList) == 0):
         start = False
@@ -117,6 +119,8 @@ def checkStock(inStock, pageNumber, item, openBrowser):
         print(currentTime)
         print("*** " + item.capitalize() + " found ***\n")
         print("Slickdeals page:",pageNumber)
+        notification.notify(title = "SlickAlerts" , message = str(item.capitalize()) + " found", app_name = "SlickAlerts", 
+                            timeout = 10, ticker = "test")
         playsound("alert.mp3")
         if(openBrowser == True):
             print("Your default web browser will now open.")
