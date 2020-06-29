@@ -15,14 +15,14 @@ Created with Python 3.8.3
 4. Enter the following and hit Enter: <code>python3 SlickAlerts.py</code>
 
 ### Module Links
-Requests - https://requests.readthedocs.io/en/master/user/install/
-Plyer - https://pypi.org/project/plyer/
-Playsound - https://pypi.org/project/playsound/
+Requests - https://requests.readthedocs.io/en/master/user/install/.  
+Plyer - https://pypi.org/project/plyer/.  
+Playsound - https://pypi.org/project/playsound/. 
 
 ### pip
-Requests - <code>pipenv install requests</code>
-Plyer - <code>pip install plyer</code>
-Playsound - <code>pip install playsound</code>
+Requests - <code>pipenv install requests</code>.  
+Plyer - <code>pip install plyer</code>.  
+Playsound - <code>pip install playsound</code>.  
 
 
 <p align="center"><img src=https://user-images.githubusercontent.com/40440123/85812491-c897ed80-b72e-11ea-8a85-1ebf17e88ad2.gif></p>
