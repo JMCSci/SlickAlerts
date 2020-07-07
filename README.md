@@ -12,13 +12,9 @@
 3. Open your command line shell and go to the directory where you saved the program.
 4. Enter the following and hit Enter: <code>python3 SlickAlerts.py</code>
 
-<<<<<<< HEAD
 <br>
 
 # Dependencies
-=======
-### Module Links
->>>>>>> 7c1df84e6b3a55914f533b86f7fed48fb3a038ac
 Requests - https://requests.readthedocs.io/en/master/user/install/  
 Plyer - https://pypi.org/project/plyer/  
 Playsound - https://pypi.org/project/playsound/ 
