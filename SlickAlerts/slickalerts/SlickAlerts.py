@@ -1,33 +1,32 @@
-''' SlickAlerts 
-    For now, only checks four keywords, case sensitive
-    Will add an data structure so that an unlimited amount of keywords can be used
-'''
-
-
-''' convert the text as it is scanned into all cap '''
-''' this way you dont have to make it case sensitive '''
+''' SlickAlerts  '''
 
 import datetime
 import requests
 import time
 from playsound import playsound
+from os.path import sys
+import webbrowser as wb
+from plyer import notification
 
 def main():
-    pageNumber = 0
+    
+    start = True
     inStock = False
-    start = True 
-    
     programTitle()
+    instructions()
+    pageNumber = 0
+    sleepDuration, keywordList, pagesToCheck, openBrowser = settings()
+
+    # If keywordsList is empty exit program
+    if(len(keywordList) == 0):
+        start = False
+        print("You have not entered any keywords. The program will exit.")
     
-    sleepDuration = eval(input("Enter time interval (in minutes): "))
-    keyword1, keyword2 = input("Enter 2 keywords (separated by comma then space): ").split(', ')
-    pagesToCheck = eval(input("Enter the total number of pages to check: "))
-    newLine()
-    
+    # Start scanning webpage after getting user settings
     while(start):
-        inStock, pageNumber, start, item = readPage(keyword1, keyword2, pagesToCheck, start)
+        inStock, pageNumber, start, item = readPage(keywordList, pagesToCheck, start)
         if(inStock == True):
-            checkStock(inStock, pageNumber, item)
+            checkStock(inStock, pageNumber, item, openBrowser)
         else:
             checkPage(pageNumber, pagesToCheck, sleepDuration)
             
@@ -38,42 +37,72 @@ def programTitle():
     print("|              SLICKALERTS               |")
     print("|                                        |")
     print("*----------------------------------------*\n")
-
-# newLine: Prints a new line
-def newLine():
-    print()
-            
+    
+# instructions: Displays user instructions
+def instructions():
+    print("Instructions")
+    print("------------")
+    print("* Use hyphens to separate products that are phrases (ex: The-Last-Of-Us)")
+    print("* Use spaces to separate products (ex: The-Last-Of-Us Honeywell Seagate)\n")
+    
+# settings: Program settings (time interval, number of pages to check, open browser)
+def settings():
+    restart = True  # Initial settings for program
+    while(restart):
+        try:
+            sleepDuration = (eval(input("Enter time interval (in minutes): ")))   # time between each scan
+            if(sleepDuration < 0):
+                sleepDuration = sleepDuration * -1
+            keywords = input("Enter keywords (separated by a space): ")     # add keywords to list data structure
+            words = keywords.split()
+            keywordList = [str(x) for x in words]   # list that contains all keywords
+            pagesToCheck = eval(input("Enter the total number of pages to check: "))   # total pages to check for keywords 
+            if(pagesToCheck < 0):
+                pagesToCheck = pagesToCheck * -1
+            browserOption = input("Do you want to open a link to the webpage when found? Yes or No? ")
+            browserOption = browserOption.upper()
+            newLine()
+            if(browserOption == "YES" or browserOption == "Y"):
+                openBrowser = True
+            else:
+                openBrowser = False
+            restart = False
+        except NameError:
+            print("Please enter a valid number.\n")
+            restart = True
+        except SyntaxError:
+            print("Please enter a valid number.\n")
+            restart = True
+    return sleepDuration, keywordList, pagesToCheck, openBrowser
+    
 # readPage: Reads and scans HTML page for keywords
-def readPage(keyword1, keyword2, pagesToCheck, start):
-    # if keyword is blank dont check it
-    
-    pageNumber = 1
-    
+def readPage(keywordList, pagesToCheck, start):
+    pageNumber = 1     
+
     while(pageNumber <= pagesToCheck):
         request = requests.get("https://slickdeals.net/forums/forumdisplay.php?f=9&page=" + str(pageNumber))
         print("SCANNING PAGE...DONE")
-        # Separate if statements to return which one was found
-        if(keyword1.upper() in request.text.upper()):
-            inStock = True
-            start = False
-            return inStock, pageNumber, start, keyword1
-        elif(keyword2.upper() in request.text.upper()):
-            inStock = True
-            start = False
-            return inStock, pageNumber, start, keyword2
-        else:
-            pageNumber += 1
-            inStock = False
-        
-    return inStock, pageNumber, start
+        # iterate through list
+        for i in keywordList:
+            # Separate if statements to return which one was found
+            if(i.upper() in request.text.upper()):
+                inStock = True
+                start = False
+                request.close()
+                return inStock, pageNumber, start, i
+        pageNumber += 1
+        inStock = False
+        request.close()        
+    return inStock, pageNumber, start, None
 
 # checkPage: Checks to see if past page -- reset back to page one and waits 15 minutes
 def checkPage(pageNumber, pagesToCheck, sleepDuration):    
     if(pageNumber > pagesToCheck):
         pageNumber = 1
         currentTime = datetime.datetime.now();
+        newLine()
         print(currentTime)
-        print("Not in stock")
+        print("Not found")
         if(sleepDuration == 1):
             print("Waiting " + str(sleepDuration) + " minute\n")
         else:
@@ -82,14 +111,26 @@ def checkPage(pageNumber, pagesToCheck, sleepDuration):
         time.sleep(sleepDuration)
         
 # checkStock: Prints message and plays alert if found
-def checkStock(inStock, pageNumber, item):
+def checkStock(inStock, pageNumber, item, openBrowser):
     if(inStock == True):
         # Play audio alert
         currentTime = datetime.datetime.now();
+        newLine()
         print(currentTime)
-        print(item.capitalize() + " found")
+        print("*** " + item.capitalize() + " found ***\n")
         print("Slickdeals page:",pageNumber)
-        playsound("/Users/jasonmoreau/Desktop/alert.mp3")
-       
+        notification.notify(title = "SlickAlerts" , message = str(item.capitalize()) + " found", app_name = "SlickAlerts", 
+                            timeout = 10, ticker = "test")
+        playsound("alert.mp3")
+        if(openBrowser == True):
+            print("Your default web browser will now open.")
+            time.sleep(1)   # pause thread so user can read message
+            wb.open("https://slickdeals.net/forums/forumdisplay.php?f=9&page=" + str(pageNumber)) # opens web browser when found
+        sys.exit(-1)
+        
+# newLine: Prints a new line
+def newLine():
+    print()
+                 
 if __name__ == '__main__':
     main()
