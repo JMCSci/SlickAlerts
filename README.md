@@ -6,12 +6,6 @@
 - Includes ability to have program open default browser to the webpage of the located product
 - Runs from the command line
 
-### Program Execution Instructions
-1. Copy SlickAlerts.py and alert.mp3 to a folder.
-2. Ensure that you have the following modules installed: <code>requests</code>, <code>plyer</code>, and <code>playsound</code>
-3. Open your command line shell and go to the directory where you saved the program.
-4. Enter the following and hit Enter: <code>python3 SlickAlerts.py</code>
-
 <br>
 
 # Dependencies
@@ -23,6 +17,14 @@ Playsound - https://pypi.org/project/playsound/
 Requests - <code>pipenv install requests</code>  
 Plyer - <code>pip install plyer</code>  
 Playsound - <code>pip install playsound</code>  
+
+<br>
+
+# Program Execution Instructions
+1. Copy SlickAlerts.py and alert.mp3 to a folder.
+2. Ensure that you have the following modules installed: <code>requests</code>, <code>plyer</code>, and <code>playsound</code>
+3. Open your command line shell and go to the directory where you saved the program.
+4. Enter the following and hit Enter: <code>python3 SlickAlerts.py</code>
 
 
 <p align="center"><img src=https://user-images.githubusercontent.com/40440123/85812491-c897ed80-b72e-11ea-8a85-1ebf17e88ad2.gif></p>
